@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SkyStore</title>
+  <style>
+    .header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .header-text {
+      margin-bottom: 10px;
+    }
+
+    .home-button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="header-text">SkyStore - магазин различных товаров</h1>
+    {% if request.path != '/' %}
+      <a href="{% url 'home' %}" class="home-button">Домашняя страница</a>
+    {% endif %}
+  </div>
+
+  {% block content %}
+  <h1>SkyStore - магазин различных товаров</h1>
+  {% endblock %}
+
+  <style>
+    .card-text {
+      overflow-wrap: break-word;
+    }
+  </style>
+</body>
+</html>

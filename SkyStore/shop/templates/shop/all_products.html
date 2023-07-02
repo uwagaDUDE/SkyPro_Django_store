@@ -1,0 +1,46 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+  <style>
+    .product-card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .edit-button {
+      margin-top: 10px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+
+    .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  </style>
+
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="center">
+      <h1>Доступные товары:</h1>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      {% for product in products %}
+        <div class="col-md-4 mb-4">
+          <div class="card product-card">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ product.price }}</h6>
+              <p class="card-text">{{ product.description }}</p>
+              <a href="{% url 'edit_product' product.pk %}" class="btn btn-primary edit-button">Редактировать</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

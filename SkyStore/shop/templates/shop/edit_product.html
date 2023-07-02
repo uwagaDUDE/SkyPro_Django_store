@@ -1,0 +1,67 @@
+{% extends "shop/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <style>
+    .form-container {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .save-button {
+      margin-top: 10px;
+    }
+
+    .old-version-container {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  </style>
+
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <div class="center">
+        <h1>Редактор</h1>
+          </div>
+        <div class="form-container">
+          <form method="post">
+            {% csrf_token %}
+            {{ form|crispy|safe }}
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary save-button">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ {% if old_version %}
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-6 old-version-container">
+          <div class="alert alert-info" role="alert">
+            <div class="center">
+            <h2>Первая версия продукта</h2>
+              </div>
+          </div>
+          <p>Первое название: {{ old_version.name }}</p>
+          <p>Первая цена: {{ old_version.price }}</p>
+          <p>Первое описание: {{ old_version.description }}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

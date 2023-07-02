@@ -1,0 +1,14 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ product.price }}</h6>
+        <p class="card-text">{{ product.description }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

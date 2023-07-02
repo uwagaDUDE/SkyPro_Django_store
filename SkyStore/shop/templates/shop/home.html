@@ -1,0 +1,27 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<style>
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .button-container a {
+    margin-right: 10px;
+  }
+</style>
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="center"><h1>Домашняя страница</h1></div>
+        <div class="center button-container">
+          <a href="{% url 'add_product' %}" class="btn btn-primary">Добавить товар</a>
+          <a href="{% url 'product_list' %}" class="btn btn-primary">Перейти к товарам</a>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </div>
+{% endblock %}

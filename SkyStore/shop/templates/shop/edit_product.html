@@ -20,27 +20,18 @@
       padding: 20px;
       margin-top: 20px;
     }
-
-    .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   </style>
 
   <div class="container">
     <div class="row justify-content-center mt-5">
       <div class="col-md-6">
-        <div class="center">
         <h1>Редактор</h1>
-          </div>
         <div class="form-container">
           <form method="post">
             {% csrf_token %}
             {{ form|crispy|safe }}
             <div class="form-group">
-              <button type="submit" class="btn btn-primary save-button">Save</button>
+              <button type="submit" class="btn btn-primary save-button">Сохранить</button>
             </div>
           </form>
         </div>
@@ -48,20 +39,22 @@
     </div>
   </div>
 
- {% if old_version %}
+  {% if old_versions %}
     <div class="container">
       <div class="row justify-content-center mt-5">
         <div class="col-md-6 old-version-container">
           <div class="alert alert-info" role="alert">
-            <div class="center">
-            <h2>Первая версия продукта</h2>
-              </div>
+            Прошлые версии:
           </div>
-          <p>Первое название: {{ old_version.name }}</p>
-          <p>Первая цена: {{ old_version.price }}</p>
-          <p>Первое описание: {{ old_version.description }}</p>
+          {% for old_version in old_versions %}
+            <p>Номер версии: {{ old_version.version }}</p>
+            <p>Старое название: {{ old_version.name }}</p>
+            <p>Старое описание: {{ old_version.description }}</p>
+            <p>Старая цена: {{ old_version.price }}</p>
+            <hr>
+          {% endfor %}
         </div>
       </div>
     </div>
-  {% endif %}
+{% endif %}
 {% endblock %}

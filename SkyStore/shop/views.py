@@ -26,15 +26,21 @@ def add_product(request):
 
 def edit_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    versions = ProductVersion.objects.filter(product_id=pk).order_by('-version')
-    old_version = versions.first()  # Получаем первую (старую) версию товара
-
-    form = ProductForm(request.POST or None, instance=product)
-    if form.is_valid():
-        form.save()
-        return redirect('product_list')
-
-    return render(request, 'shop/edit_product.html', {'form': form, 'product': product, 'versions': versions, 'old_version': old_version})
+    versions = ProductVersion.objects.filter(product_id=pk)
+    old_versions = versions
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            # Создаем новую версию товара
+            new_version = ProductVersion(product=product, name=form.cleaned_data['name'], price=form.cleaned_data['price'], description=form.cleaned_data['description'], version=product.version+1)
+            new_version.save()
+            # Обновляем поле версии товара в модели Product
+            product.version += 1
+            product.save()
+            return redirect('product_list')
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'shop/edit_product.html', {'form': form, 'product': product, 'versions': versions, 'old_versions': old_versions})
 
 def product_list(request):
     products = Product.objects.all().order_by('-id')

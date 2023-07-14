@@ -127,3 +127,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_FROM_EMAIL = 'uwagadudedjango@yandex.ru'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'uwagadudedjango@yandex.ru'
+EMAIL_HOST_PASSWORD = 'micnlurtvdabessp'
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False

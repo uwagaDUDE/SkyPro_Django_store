@@ -1,60 +1,20 @@
 {% extends "shop/base.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-  <style>
-    .form-container {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-
-    .save-button {
-      margin-top: 10px;
-    }
-
-    .old-version-container {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-  </style>
-
-  <div class="container">
-    <div class="row justify-content-center mt-5">
-      <div class="col-md-6">
-        <h1>Редактор</h1>
-        <div class="form-container">
-          <form method="post">
-            {% csrf_token %}
-            {{ form|crispy|safe }}
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary save-button">Сохранить</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {% if old_versions %}
-    <div class="container">
-      <div class="row justify-content-center mt-5">
-        <div class="col-md-6 old-version-container">
-          <div class="alert alert-info" role="alert">
-            Прошлые версии:
-          </div>
-          {% for old_version in old_versions %}
-            <p>Номер версии: {{ old_version.version }}</p>
-            <p>Старое название: {{ old_version.name }}</p>
-            <p>Старое описание: {{ old_version.description }}</p>
-            <p>Старая цена: {{ old_version.price }}</p>
-            <hr>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-{% endif %}
+  <h1>Редактирование продукта</h1>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ formset.management_form }}
+    {% for version_form in formset %}
+      {% if version_form.instance.version == product.version %}
+        <h3>Актуальная версия</h3>
+      {% else %}
+        <hr>
+        <h3>Версия {{ version_form.instance.version }}</h3>
+      {% endif %}
+      {{ version_form.as_p }}
+    {% endfor %}
+    <button type="submit">Сохранить</button>
+  </form>
 {% endblock %}

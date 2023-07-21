@@ -55,6 +55,7 @@ class ProductVersion(models.Model):
     description = models.TextField(max_length=1800, verbose_name='Описание товара')
     created_at = models.DateTimeField(default=datetime.now)
     version = models.IntegerField(default=1)
+    versions = models.CharField(default='')
 
     def __str__(self):
         return self.name

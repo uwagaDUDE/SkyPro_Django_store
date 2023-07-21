@@ -1,5 +1,5 @@
 from .models import Product
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
@@ -73,26 +73,25 @@ def add_product(request):
 
 def edit_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    versions = ProductVersion.objects.filter(product_id=pk)
-    old_versions = versions
+    version = ProductVersion.objects.filter(product_id=pk)
+    old_versions = version
 
     # Создаем formset для редактирования версий продукта
-    ProductVersionFormSet = modelformset_factory(ProductVersion, fields=('name', 'price', 'description'), extra=1)
-
+    ProductVersionFormSet = inlineformset_factory(Product, ProductVersion, form=ProductVersionForm, can_delete=True)
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
-        formset = ProductVersionFormSet(request.POST, queryset=versions)
+        formset = ProductVersionFormSet(request.POST, queryset=version)
         if form.is_valid() and formset.is_valid():
-            # Сохраняем изменения в основной модели
-            form.save()
-            # Сохраняем изменения в версиях продукта
             for version_form in formset:
                 if version_form.is_valid():
-                    version_form.save()
+                    version = version_form.save(commit=True)
+                    version.product = product
+                    version.save()
+            product.save()
             return redirect('product_list')
     else:
         form = ProductForm(instance=product)
-        formset = ProductVersionFormSet(queryset=versions)
+        formset = ProductVersionFormSet(queryset=version)
 
     return render(request, 'shop/edit_product.html',
                   {'form': form, 'product': product, 'formset': formset, 'old_versions': old_versions})
